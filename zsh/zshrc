@@ -1,0 +1,75 @@
+source ~/.zshenv
+
+# User configuration
+source $ZSH/oh-my-zsh.sh
+source /opt/boxen/env.sh
+. /Users/craigread/.nix-profile/etc/profile.d/nix.sh
+source $HOME/src/z/z.sh
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias ctags="`brew --prefix`/bin/ctags"
+
+export BOXEN_MYSQL_PORT=13306
+set -o vi
+
+export PGDATA=/opt/boxen/homebrew/Cellar/postgresql/data
+
+function bk {
+ baxter kumo $@
+}
+
+function be {
+ bundle exec $@
+}
+
+function gs {
+ git status $@
+}
+
+function nprod {
+    export $(cat ~/.kumo/non-production-creds | xargs) && $@
+}
+
+function prod {
+    export $(cat ~/.kumo/production-creds | xargs)  && $@
+}
+
+alias ed='emacs --daemon'
+alias edk='emacsclient -e "(kill-emacs)"'
+function ec() {
+  emacsclient -tty -c -a "" "$@"
+}
+function ew() {
+  emacsclient -c -a "" "$@" &!
+}
+function v {
+    vim $@
+}
+
+alias cppassword="grep password /Users/craigread/src/redbubble/config/deploy.rb | awk -F\\\" '{print \$2}' | pbcopy"
+alias rake='noglob rake'
+alias zeus='noglob zeus'
+
+function cleanup_docker_images {
+  # Delete all containers
+  docker rm $(docker ps -a -q)
+  # # Delete all images
+  docker rmi $(docker images -q)
+}
+
+eval "$(rbenv init - zsh)"
+
+[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
+eval "$($HOME/src/kumo/bin/kumo init -)"
+eval "$(aliases init --global)"
+aliases rehash
