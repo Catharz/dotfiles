@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/craigread/.oh-my-zsh
 
-export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:/opt/boxen/heroku/bin:/opt/boxen/rbenv/shims:/opt/boxen/rbenv/bin:/opt/boxen/ruby-build/bin:node_modules/.bin:/opt/boxen/nodenv/shims:/opt/boxen/nodenv/bin:/opt/boxen/homebrew/bin:/opt/boxen/homebrew/sbin:/opt/boxen/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin:/Users/craigread/src/baxter/bin:/Users/craigread/bin:/usr/local/bin:/Users/craigread/.fastlane/bin"
+export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:node_modules/.bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin:/Users/craigread/src/baxter/bin:/Users/craigread/bin:/usr/local/bin:/Users/craigread/.fastlane/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # Set name of the theme to load.
@@ -84,7 +84,4 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export BOXEN_MYSQL_PORT=13306
 export AWS_DEFAULT_REGION=us-east-1
-
-[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
