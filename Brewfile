@@ -78,5 +78,4 @@ brew 'wget'
 brew 'yarn'
 brew 'youtube-dl'
 brew 'z'
-brew 'zsh'
 
