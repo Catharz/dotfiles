@@ -1,5 +1,3 @@
-brew bundle
-
 ln -s ${HOME}/src/dotfiles/ruby/bundle ${HOME}/.bundle
 ln -s ${HOME}/src/dotfiles/ruby/gemrc ${HOME}/.gemrc
 ln -s ${HOME}/src/dotfiles/ruby/pryrc ${HOME}/.pryrc
@@ -11,3 +9,5 @@ ln -s ${HOME}/src/dotfiles/git/gitconfig ${HOME}/.gitconfig
 
 ln -s ${HOME}/src/dotfiles/zsh/zhsenv ${HOME}/.zshenv
 ln -s ${HOME}/src/dotfiles/zsh/zhsrc ${HOME}/.zshrc
+
+brew bundle
