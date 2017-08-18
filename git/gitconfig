@@ -13,11 +13,10 @@ default = simple
 [hub]
 protocol = https
 
-[credential]
-	helper = /opt/boxen/bin/boxen-git-credential
+[credential "https://github.com"]
+	username = Catharz
 
 [core]
-	excludesfile = /opt/boxen/config/git/gitignore
 	editor = vim
 [user]
 	email = craig.read@redbubble.com
