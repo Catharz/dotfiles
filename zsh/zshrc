@@ -39,6 +39,8 @@ function prod {
     export $(cat ~/.kumo/production-creds | xargs)  && $@
 }
 
+alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
+alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
 alias ed='emacs --daemon'
 alias edk='emacsclient -e "(kill-emacs)"'
 function ec() {
