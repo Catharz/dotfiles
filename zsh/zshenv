@@ -6,7 +6,7 @@ export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:node_modules/.bin:/usr/bin:/bin
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="josh"
+export ZSH_THEME="josh"
 #if [ -n "$INSIDE_EMACS" ]; then
 #    export ZSH_THEME="random"
 #else

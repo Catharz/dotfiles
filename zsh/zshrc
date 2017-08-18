@@ -2,7 +2,6 @@ source ~/.zshenv
 
 # User configuration
 source $ZSH/oh-my-zsh.sh
-. /Users/craigread/.nix-profile/etc/profile.d/nix.sh
 source $HOME/src/z/z.sh
 
 # You may need to manually set your language environment
