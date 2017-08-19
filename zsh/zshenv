@@ -3,6 +3,7 @@ export ZSH=/Users/craigread/.oh-my-zsh
 
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:node_modules/.bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin:/Users/craigread/src/baxter/bin:/Users/craigread/bin:/usr/local/bin:/Users/craigread/.fastlane/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
+export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
