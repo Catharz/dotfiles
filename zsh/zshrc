@@ -4,6 +4,8 @@ source ~/.zshenv
 source $ZSH/oh-my-zsh.sh
 source $HOME/src/z/z.sh
 
+export NPM_AUTH_TOKEN=`sed 's/^.*=//' ~/.npmrc`
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
