@@ -34,11 +34,13 @@ function gs {
 }
 
 function nprod {
-    export $(cat ~/.kumo/non-production-creds | xargs) && $@
+  kubectl config use-context kubernetes-staging
+  export $(cat ~/.kumo/non-production-creds | xargs) && $@
 }
 
 function prod {
-    export $(cat ~/.kumo/production-creds | xargs)  && $@
+  kubectl config use-context kubernetes-production
+  export $(cat ~/.kumo/production-creds | xargs)  && $@
 }
 
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
@@ -65,5 +67,3 @@ function cleanup_docker_images {
   # Delete all images
   docker rmi $(docker images -q)
 }
-
-eval "$(rbenv init - zsh)"
