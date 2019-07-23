@@ -1,9 +1,11 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/craigread/.oh-my-zsh
 
-export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:node_modules/.bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin:/Users/craigread/src/baxter/bin:/Users/craigread/bin:/usr/local/bin:/Users/craigread/.fastlane/bin"
+export PATH="$HOME/.nodenv/shims:$HOME/.rbenv/shims:$HOME/.rbenv/bin:node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin:/Users/craigread/go/bin:/Users/craigread/src/baxter/bin:/Users/craigread/bin:/Users/craigread/.fastlane/bin:$HOME/.asdf/installs/rust/1.36.0/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
-export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
+export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+export GOPATH="$HOME/go"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -59,7 +61,7 @@ export ZSH_THEME="josh"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundler osx rake ruby rbenv man dotenv)
+plugins=(git bundler osx rake ruby rbenv man dotenv zsh-kubectl-prompt)
 
 # User configuration
 
@@ -86,5 +88,6 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export AWS_DEFAULT_REGION=us-east-1
+export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}:${HOME}/.kube/rb-k8s-auth-pkg/production-us-east-1.yml:${HOME}/.kube/rb-k8s-auth-pkg/production-us-west-2.yml:${HOME}/.kube/rb-k8s-auth-pkg/staging-us-east-1.yml:${HOME}/.kube/rb-k8s-auth-pkg/staging-us-west-2.yml"
 
 eval "$(rbenv init -)"

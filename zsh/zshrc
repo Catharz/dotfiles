@@ -1,4 +1,4 @@
-source ~/.zshenv
+# source ~/.zshenv
 
 # User configuration
 source $ZSH/oh-my-zsh.sh
@@ -36,20 +36,39 @@ function gs {
  git status $@
 }
 
-function nprod {
-  kubectl config use-context kubernetes-staging
-  export $(cat ~/.kumo/non-production-creds | xargs) && $@
+function staging-us-east-1 {
+	export $(yak staging)
+	export AWS_DEFAULT_REGION=us-east-1
+	kubectl config use-context staging-us-east-1 && $@
+}
+
+function staging-us-west-2 {
+	export $(yak staging)
+	export AWS_DEFAULT_REGION=us-west-2
+	kubectl config use-context staging-us-west-2 && $@
+}
+
+function production-us-east-1 {
+	export $(yak production)
+	export AWS_DEFAULT_REGION=us-east-1
+	kubectl config use-context production-us-east-1 && $@
+}
+
+function production-us-west-2 {
+	export $(yak production)
+	export AWS_DEFAULT_REGION=us-west-2
+	kubectl config use-context production-us-west-2 && $@
 }
 
 function prod {
-  kubectl config use-context kubernetes-production
+  kubectl config use-context production-us-east-1
   export $(cat ~/.kumo/production-creds | xargs)  && $@
 }
 
-alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
-alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-alias ed='emacs --daemon'
-alias edk='emacsclient -e "(kill-emacs)"'
+# alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
+# alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+# alias ed='emacs --daemon'
+# alias edk='emacsclient -e "(kill-emacs)"'
 function ec() {
   emacsclient -tty -c -a "" "$@"
 }
@@ -61,8 +80,8 @@ function v {
 }
 
 alias cppassword="grep password /Users/craigread/src/redbubble/config/deploy.rb | awk -F\\\" '{print \$2}' | pbcopy"
-alias rake='noglob rake'
-alias zeus='noglob zeus'
+#alias rake='noglob rake'
+#alias zeus='noglob zeus'
 
 function cleanup_docker_images {
   # Delete all containers
@@ -73,3 +92,8 @@ function cleanup_docker_images {
 
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
+. $HOME/.asdf/installs/rust/1.36.0/env
+
+autoload -U colors; colors
+. $HOME/.oh-my-zsh/custom/plugins/zsh-kubectl-prompt/kubectl.zsh
+RPROMPT='%{$fg[yellow]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'

@@ -18,28 +18,42 @@ protocol = https
 
 [core]
 	editor = vim
+	excludesfile = /Users/craigread/.gitignore_global
 [user]
 	email = craig.read@redbubble.com
-  name = Craig Read
+	name = Craig Read
 
 [diff]
-    tool = bcomp
+	tool = bc3
 [difftool]
     prompt = false
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
-[difftool "bcomp"]
-    trustExitCode = true
-  cmd = "/usr/local/bin/bcomp" \"$LOCAL\" \"$REMOTE\"
+	bc3 = trustExitCode
 
+[difftool "kdiff3"]
+	path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
 [merge]
-    tool = bcomp
+	tool = bc3
+[mergetool "kdiff3"]
+	path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+	args = $base $local $other -o $output
+	trustExitCode = false
+
 [mergetool]
     prompt = false
-[mergetool "bcomp"]
-    trustExitCode = true
-      cmd = "/usr/local/bin/bcomp" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	bc3 = trustExitCode
+
+[difftool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[commit]
+	template = /Users/craigread/.stCommitMsg
