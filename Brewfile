@@ -56,6 +56,7 @@ brew 'heroku'
 brew 'hub'
 brew 'htop'
 brew 'imagemagick@6', args: ['with-qauntum-depth-8']
+brew 'ispell'
 brew 'jp2a'
 brew 'jq'
 brew 'lastpass-cli', args: ['with-pinentry']

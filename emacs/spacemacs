@@ -33,35 +33,51 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(elixir
-     csharp
-     ;; ----------------------------------------------------------------
+   '(;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-help-tooltip 'manual
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence "jk")
      ;; better-defaults
+     elixir
+     erlang
+     csharp
      emacs-lisp
      git
      helm
-     ;; markdown
+     markdown
+     csv
+     html
      (ruby :variables
            ruby-enable-enh-ruby-mode t
            ruby-enable-ruby-on-rails-support t
            ruby-version-manager 'rbenv
            ruby-test-runner 'rspec)
      ruby-on-rails
+     javascript
+     rust
+     react
+     docker
      ;; Tools
-     shell
+     osx
+     (shell :variables
+            shell-default-term-shell "/bin/zsh"
+            shell-default-shell 'eshell
+            shell-default-height 30
+            shell-default-width 80
+            shell-default-position 'bottom)
      dash
      restclient
      multiple-cursors
      org
      spotify
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
      spell-checking
      syntax-checking
      treemacs
@@ -75,7 +91,8 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(company-tabnine
+                                      doom-themes)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -204,12 +221,15 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(railscasts
+   dotspacemacs-themes '(spacemacs-dark
+                         doom-challenger-deep
+                         doom-city-lights
+                         doom-nord
+                         doom-spacegrey
+                         doom-one
+                         railscasts
                          material
-                         spacemacs-dark
-                         spacemacs-light
                          solarized-dark
-                         solarized-light
                          leuven
                          monokai
                          zenburn)
@@ -221,7 +241,8 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.0)
+   ;; dotspacemacs-mode-line-theme 'doom
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -232,7 +253,7 @@ It should only modify the values of Spacemacs settings."
                                :size 12.0
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -382,11 +403,19 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+   ;; dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative t
+                                         :visual nil
+                                         :disabled-for-modes dired-mode
+                                         doc-view-mode
+                                         markdown-mode
+                                         org-mode
+                                         pdf-view-mode
+                                         text-mode)
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -462,7 +491,12 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-pretty-docs nil
 
    ;; elixir setup
-   alchemist-mix-command "/Users/craigread/.asdf/shims/mix"))
+   alchemist-mix-command "/Users/craigread/.asdf/shims/mix"
+
+   ;; Load local file config
+   ;; (when (file-exists-p "~/.local.el")
+   ;;   (load "~/.local.el"))
+   ))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -478,14 +512,14 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (add-to-list 'company-backends #'company-tabnine))
+  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-  'company-tabnine)
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -493,7 +527,29 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  )
+  ;; company mode configuration
+  ;; (require 'company-tabnine)
+  ;; (with-eval-after-load 'company
+  ;;   (add-to-list 'company-backends #'company-tabnine)
+  ;;   (add-to-list 'company-backends #'company-yasnippet))
+
+  ;; Trigger completion immediately.
+  (setq company-idle-delay 0)
+
+  ;; Number the candidates (use M-1, M-2 etc to select completions).
+  (setq company-show-numbers t)
+
+  (add-hook 'after-init-hook 'global-company-mode)
+
+  (define-key evil-insert-state-map (kbd "TAB") 'company-tabnine)
+
+  ;; Use the tab-and-go frontend.
+  ;; Allows TAB to select and complete at the same time.
+  (company-tng-configure-default)
+  (setq company-frontends
+        '(company-tng-frontend
+          company-pseudo-tooltip-frontend
+          company-echo-metadata-frontend)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -509,7 +565,39 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
+ '(company-quickhelp-color-background "#4F4F4F")
+ '(company-quickhelp-color-foreground "#DCDCCC")
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#2aa198")
+ '(cua-normal-cursor-color "#657b83")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
  '(evil-want-Y-yank-to-eol nil)
+ '(fci-rule-color "#37474f")
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-symbol-colors
+   (--map
+    (solarized-color-blend it "#fdf6e3" 0.25)
+    (quote
+     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
+ '(highlight-symbol-foreground-color "#586e75")
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(hl-bg-colors
+   (quote
+    ("#DEB542" "#F2804F" "#FF6E64" "#F771AC" "#9EA0E5" "#69B7F0" "#69CABF" "#B4C342")))
+ '(hl-fg-colors
+   (quote
+    ("#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3")))
+ '(hl-paren-colors (quote ("#2aa198" "#b58900" "#268bd2" "#6c71c4" "#859900")))
  '(hl-sexp-background-color "#1c1f26")
  '(hl-todo-keyword-faces
    (quote
@@ -528,10 +616,53 @@ This function is called at the very end of Spacemacs initialization."
      ("FIXME" . "#dc752f")
      ("XXX" . "#dc752f")
      ("XXXX" . "#dc752f"))))
+ '(jdee-db-active-breakpoint-face-colors (cons "#10151C" "#5EC4FF"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#10151C" "#8BD49C"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#10151C" "#384551"))
+ '(magit-diff-use-overlays nil)
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(objed-cursor-color "#D95468")
  '(package-selected-packages
    (quote
-    (flyspell-correct-helm flyspell-correct pos-tip auto-dictionary know-your-http-well yasnippet org-category-capture alert log4e gntp htmlize company-tabnine magit-popup gitignore-mode magit transient git-commit with-editor restclient railscasts-reloaded-theme helm-gtags ggtags counsel-gtags company elixir-mode evil-mc define-word zenburn-theme yasnippet-snippets yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill treemacs-projectile treemacs-evil toc-org tide tagedit symon symbol-overlay swift-mode string-inflection stickyfunc-enhance srefactor sql-indent spotify spaceline-all-the-icons solarized-theme smeargle slim-mode slack shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restclient-helm restart-emacs rbenv ranger rainbow-delimiters railscasts-theme pug-mode projectile-rails prettier-js popwin persp-mode password-generator paradox overseer osx-trash osx-dictionary osx-clipboard orgit org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-bullets org-brain open-junk-file omnisharp ob-restclient ob-http ob-elixir noflet nodejs-repl nginx-mode nameless mwim mvn multi-term move-text monokai-theme mmm-mode minitest meghanada maven-test-mode material-theme markdown-toc magit-svn magit-gitflow macrostep lsp-haskell lorem-ipsum livid-mode link-hint launchctl json-navigator json-mode js2-refactor js-doc intero insert-shebang indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets groovy-mode groovy-imports gradle-mode google-translate golden-ratio gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy forge font-lock+ flycheck-pos-tip flycheck-package flycheck-mix flycheck-haskell flycheck-credo flycheck-bashate flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang ensime enh-ruby-mode emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl devdocs dash-at-point dante csv-mode counsel-projectile company-web company-tern company-statistics company-shell company-restclient company-lua company-ghci company-ghc company-emacs-eclim company-cabal column-enforce-mode cmm-mode clojure-snippets clean-aindent-mode cider-eval-sexp-fu cider chruby centered-cursor-mode bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile attrap alchemist aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
- '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef"))))
+    (origami company-quickhelp toml-mode racer haml-mode flycheck-rust dockerfile-mode docker tablist docker-tramp web-completion-data cargo markdown-mode rust-mode doom-themes skewer-mode simple-httpd hierarchy json-snatcher json-reformat multiple-cursors js2-mode dash-functional tern unicode-escape names helm-ispell flyspell-correct-helm flyspell-correct pos-tip auto-dictionary know-your-http-well yasnippet org-category-capture alert log4e gntp htmlize company-tabnine magit-popup gitignore-mode magit transient git-commit with-editor restclient railscasts-reloaded-theme helm-gtags ggtags counsel-gtags company elixir-mode evil-mc define-word zenburn-theme yasnippet-snippets yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill treemacs-projectile treemacs-evil toc-org tide tagedit symon symbol-overlay swift-mode string-inflection stickyfunc-enhance srefactor sql-indent spotify spaceline-all-the-icons solarized-theme smeargle slim-mode slack shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restclient-helm restart-emacs rbenv ranger rainbow-delimiters railscasts-theme pug-mode projectile-rails prettier-js popwin persp-mode password-generator paradox overseer osx-trash osx-dictionary osx-clipboard orgit org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-bullets org-brain open-junk-file omnisharp ob-restclient ob-http ob-elixir noflet nodejs-repl nginx-mode nameless mwim mvn multi-term move-text monokai-theme mmm-mode minitest meghanada maven-test-mode material-theme markdown-toc magit-svn magit-gitflow macrostep lsp-haskell lorem-ipsum livid-mode link-hint launchctl json-navigator json-mode js2-refactor js-doc intero insert-shebang indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets groovy-mode groovy-imports gradle-mode google-translate golden-ratio gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy forge font-lock+ flycheck-pos-tip flycheck-package flycheck-mix flycheck-haskell flycheck-credo flycheck-bashate flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang ensime enh-ruby-mode emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl devdocs dash-at-point dante csv-mode counsel-projectile company-web company-tern company-statistics company-shell company-restclient company-lua company-ghci company-ghc company-emacs-eclim company-cabal column-enforce-mode cmm-mode clojure-snippets clean-aindent-mode cider-eval-sexp-fu cider chruby centered-cursor-mode bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile attrap alchemist aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+ '(pdf-view-midnight-colors (quote ("#655370" . "#fbf8ef")))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
+ '(term-default-bg-color "#fdf6e3")
+ '(term-default-fg-color "#657b83")
+ '(vc-annotate-background nil)
+ '(vc-annotate-background-mode nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#f36c60")
+     (40 . "#ff9800")
+     (60 . "#fff59d")
+     (80 . "#8bc34a")
+     (100 . "#81d4fa")
+     (120 . "#4dd0e1")
+     (140 . "#b39ddb")
+     (160 . "#f36c60")
+     (180 . "#ff9800")
+     (200 . "#fff59d")
+     (220 . "#8bc34a")
+     (240 . "#81d4fa")
+     (260 . "#4dd0e1")
+     (280 . "#b39ddb")
+     (300 . "#f36c60")
+     (320 . "#ff9800")
+     (340 . "#fff59d")
+     (360 . "#8bc34a"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
+ '(xterm-color-names
+   ["#eee8d5" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#073642"])
+ '(xterm-color-names-bright
+   ["#fdf6e3" "#cb4b16" "#93a1a1" "#839496" "#657b83" "#6c71c4" "#586e75" "#002b36"]))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
